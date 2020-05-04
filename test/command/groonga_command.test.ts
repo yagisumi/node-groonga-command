@@ -1,4 +1,5 @@
-import { createCommand, FormatOptions } from '@/command/groonga_command'
+import { createCommand } from '@/command/groonga_command'
+import { FormatOptions } from '@/types'
 
 describe('GroongaCommand', () => {
   test.each([
