@@ -10,6 +10,11 @@ function isOrderedArguments(obj: any): obj is string[] | undefined {
   return obj === undefined || Array.isArray(obj)
 }
 
+export type FormatOptions = {
+  pretty_print?: boolean
+  exclude?: string[]
+}
+
 export function createCommand(
   command_name: string,
   pair_arguments: StringPairs,
@@ -104,8 +109,51 @@ export class GroongaCommand {
     return this.arguments['request_id']
   }
 
-  to_uri_format() {}
-  to_command_format() {}
+  to_uri_format(options?: FormatOptions) {
+    const prefix = this.path_prefix.endsWith('/') ? this.path_prefix.slice(0, -1) : this.path_prefix
+    let path = [prefix, this.command_name].join('/')
+
+    const exclude = options?.exclude ?? []
+
+    if (this.has_key('output_type')) {
+      path += `.${this.arguments['output_type']}`
+    }
+
+    const queries: string[] = []
+    Object.keys(this.arguments)
+      .sort()
+      .forEach((name) => {
+        if (name !== 'output_type' && !exclude.includes(name)) {
+          queries.push(`${encodeURIComponent(name)}=${encodeURIComponent(this.arguments[name])}`)
+        }
+      })
+
+    if (queries.length > 0) {
+      path += `?${queries.join('&')}`
+    }
+
+    return path
+  }
+
+  to_command_format(options?: FormatOptions) {
+    const pretty_print = options?.pretty_print ?? false
+    const exclude = options?.exclude ?? []
+    const components = [this.command_name]
+
+    Object.keys(this.arguments)
+      .sort()
+      .forEach((name) => {
+        if (!exclude.includes(name)) {
+          components.push(`--${name} ${this.escape_value(this.arguments[name])}`)
+        }
+      })
+
+    return pretty_print ? components.join(' \\\n  ') : components.join(' ')
+  }
+
+  private escape_value(value: string) {
+    return `"${value.replace(/[\n"\\]/g, (match) => (match === '\n' ? '\\n' : `\\${match}`))}"`
+  }
 
   toString() {
     if (this.is_uri_format()) {
