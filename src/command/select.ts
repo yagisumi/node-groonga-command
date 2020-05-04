@@ -2,6 +2,7 @@ import { GroongaCommand } from './groonga_command'
 import { Drilldownable } from './drilldownable'
 import { Searchable } from './searchable'
 import { Sliceable } from './sliceable'
+import { array_value, parse_array_value } from '../utils'
 
 export class Select extends Sliceable(Searchable(Drilldownable(GroongaCommand))) {
   static readonly command_name = 'select'
@@ -38,7 +39,7 @@ export class Select extends Sliceable(Searchable(Drilldownable(GroongaCommand)))
   }
 
   get sort_keys() {
-    return this.parse_array_value(this.arguments['sort_keys'] || this.arguments['sortby'] || '')
+    return parse_array_value(this.arguments['sort_keys'] ?? this.arguments['sortby'] ?? '')
   }
 
   get scorer(): string | undefined {
@@ -54,7 +55,7 @@ export class Select extends Sliceable(Searchable(Drilldownable(GroongaCommand)))
   }
 
   get output_columns() {
-    return this.array_value('output_columns')
+    return array_value(this.arguments, 'output_columns')
   }
 }
 

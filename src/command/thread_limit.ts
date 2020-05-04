@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { integer_value } from '../utils'
 
 export class ThreadLimit extends GroongaCommand {
   static readonly command_name = 'thread_limit'
@@ -7,7 +8,7 @@ export class ThreadLimit extends GroongaCommand {
   ]
 
   get max() {
-    return this.integer_value('max')
+    return integer_value(this.arguments, 'max')
   }
 }
 

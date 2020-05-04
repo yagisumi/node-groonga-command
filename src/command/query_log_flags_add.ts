@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { flags_value } from '../utils'
 
 export class QueryLogFlagsAdd extends GroongaCommand {
   static readonly command_name = 'query_log_flags_add'
@@ -7,7 +8,7 @@ export class QueryLogFlagsAdd extends GroongaCommand {
   ]
 
   get flags() {
-    return this.flags_value('flags')
+    return flags_value(this.arguments, 'flags')
   }
 }
 

@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { array_value, flags_value } from '../utils'
 
 export class ColumnCreate extends GroongaCommand {
   static readonly command_name = 'column_create'
@@ -19,7 +20,7 @@ export class ColumnCreate extends GroongaCommand {
   }
 
   get flags() {
-    return this.flags_value('flags')
+    return flags_value(this.arguments, 'flags')
   }
 
   get type(): string | undefined {
@@ -51,7 +52,7 @@ export class ColumnCreate extends GroongaCommand {
   }
 
   get sources() {
-    return this.array_value('source')
+    return array_value(this.arguments, 'source')
   }
 }
 

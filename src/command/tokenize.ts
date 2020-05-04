@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { flags_value, array_value } from '../utils'
 
 export class Tokenize extends GroongaCommand {
   static readonly command_name = 'tokenize'
@@ -24,7 +25,7 @@ export class Tokenize extends GroongaCommand {
   }
 
   get flags() {
-    return this.flags_value('flags')
+    return flags_value(this.arguments, 'flags')
   }
 
   get mode(): string | undefined {
@@ -32,7 +33,7 @@ export class Tokenize extends GroongaCommand {
   }
 
   get token_filters() {
-    return this.array_value('token_filters')
+    return array_value(this.arguments, 'token_filters')
   }
 }
 

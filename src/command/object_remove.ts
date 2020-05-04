@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { boolean_value } from '../utils'
 
 export class ObjectRemove extends GroongaCommand {
   static readonly command_name = 'object_remove'
@@ -12,7 +13,7 @@ export class ObjectRemove extends GroongaCommand {
   }
 
   is_force() {
-    return this.boolean_value('force', false, false)
+    return boolean_value(this.arguments, 'force', false, false)
   }
 }
 

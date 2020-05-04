@@ -1,24 +1,23 @@
 import { GroongaCommand } from './groonga_command'
+import { Constructor, StringPairs } from '../types'
 
-type Constructor<T = {}> = new (...args: any[]) => T
+function split_filter_conditions(args: StringPairs) {
+  return (args['filter'] || '')
+    .split(/(?:&&|&!|\|\|)/)
+    .filter((str) => str.length > 0)
+    .map((condition) => {
+      let cond = condition.trim().replace(/^[\s\(]*/g, '')
+      if (!cond.match(/\(/)) {
+        cond = cond.replace(/[\s\)]*$/g, '')
+      }
+      return cond
+    })
+}
 
 export function Searchable<TBase extends Constructor<GroongaCommand>>(Base: TBase) {
   return class extends Base {
     get conditions() {
-      return this.split_filter_conditions()
-    }
-
-    private split_filter_conditions() {
-      return (this.arguments['filter'] || '')
-        .split(/(?:&&|&!|\|\|)/)
-        .filter((str) => str.length > 0)
-        .map((condition) => {
-          let cond = condition.trim().replace(/^[\s\(]*/g, '')
-          if (!cond.match(/\(/)) {
-            cond = cond.replace(/[\s\)]*$/g, '')
-          }
-          return cond
-        })
+      return split_filter_conditions(this.arguments)
     }
   }
 }

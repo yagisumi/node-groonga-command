@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { flags_value, array_value } from '../utils'
 
 export class TableCreate extends GroongaCommand {
   static readonly command_name = 'table_create'
@@ -25,7 +26,7 @@ export class TableCreate extends GroongaCommand {
   }
 
   get flags() {
-    return this.flags_value('flags')
+    return flags_value(this.arguments, 'flags')
   }
 
   get TABLE_NO_KEY() {
@@ -57,7 +58,7 @@ export class TableCreate extends GroongaCommand {
   }
 
   get token_filters() {
-    return this.array_value('token_filters')
+    return array_value(this.arguments, 'token_filters')
   }
 }
 

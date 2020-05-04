@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { flags_value } from '../utils'
 
 export class TableTokenize extends GroongaCommand {
   static readonly command_name = 'table_tokenize'
@@ -18,7 +19,7 @@ export class TableTokenize extends GroongaCommand {
   }
 
   get flags() {
-    return this.flags_value('flags')
+    return flags_value(this.arguments, 'flags')
   }
 
   get mode(): string | undefined {

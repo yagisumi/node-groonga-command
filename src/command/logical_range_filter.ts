@@ -1,5 +1,6 @@
 import { GroongaCommand } from './groonga_command'
 import { Searchable } from './searchable'
+import { integer_value, array_value, boolean_value } from '../utils'
 
 export class LogicalRangeFilter extends Searchable(GroongaCommand) {
   static readonly command_name = 'logical_range_filter'
@@ -49,11 +50,11 @@ export class LogicalRangeFilter extends Searchable(GroongaCommand) {
   }
 
   get offset() {
-    return this.integer_value('offset')
+    return integer_value(this.arguments, 'offset')
   }
 
   get limit() {
-    return this.integer_value('limit')
+    return integer_value(this.arguments, 'limit')
   }
 
   get filter(): string | undefined {
@@ -61,11 +62,26 @@ export class LogicalRangeFilter extends Searchable(GroongaCommand) {
   }
 
   get output_columns() {
-    return this.array_value('output_columns')
+    return array_value(this.arguments, 'output_columns')
   }
 
-  get use_range_index(): boolean | undefined {
-    return this.boolean_value<undefined, undefined>('use_range_index', undefined, undefined)
+  get use_range_index() {
+    if ('use_range_index' in this.arguments) {
+      const value = this.arguments['use_range_index']
+      if (value.length === 0) {
+        return undefined
+      }
+
+      if (value === 'yes') {
+        return true
+      } else if (value === 'no') {
+        return false
+      } else {
+        return undefined
+      }
+    } else {
+      return undefined
+    }
   }
 
   get post_filter(): string | undefined {
@@ -73,7 +89,7 @@ export class LogicalRangeFilter extends Searchable(GroongaCommand) {
   }
 
   get sort_keys() {
-    return this.array_value('sort_keys')
+    return array_value(this.arguments, 'sort_keys')
   }
 }
 

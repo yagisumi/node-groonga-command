@@ -1,26 +1,10 @@
 import { GroongaCommand } from './groonga_command'
-
-type Constructor<T = {}> = new (...args: any[]) => T
-
-export type Drilldown = {
-  keys: string[]
-  sort_keys: string[]
-  output_columns: string[]
-  offset?: number
-  limit?: number
-  calc_types: string[]
-  calc_target?: string
-  filter?: string
-  label: string
-}
-
-function escape(str: string) {
-  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
-}
+import { Drilldown, Constructor } from '../types'
+import { escapePattern, array_value, parse_array_value, parse_integer_value, integer_value } from '../utils'
 
 export function parse_labeled_drilldowns(args: { [key: string]: string }, prefix = '') {
   const raw_labeled_drilldowns = Object.create(null)
-  const re_drilldowns = new RegExp(`^${escape(prefix)}drilldowns?\\[(.+?)\\]\\.(.+?)$`)
+  const re_drilldowns = new RegExp(`^${escapePattern(prefix)}drilldowns?\\[(.+?)\\]\\.(.+?)$`)
 
   Object.keys(args).forEach((name) => {
     if (name.match(re_drilldowns)) {
@@ -34,18 +18,6 @@ export function parse_labeled_drilldowns(args: { [key: string]: string }, prefix
   })
 
   return build_labeled_drilldowns(raw_labeled_drilldowns)
-}
-
-function parse_array_value(value: string) {
-  return value
-    .trim()
-    .split(/\s*,\s*/)
-    .filter((s) => s.length > 0)
-}
-
-function parse_integer_value(value: string) {
-  const n = parseInt(value)
-  return isNaN(n) ? undefined : n
 }
 
 function build_labeled_drilldowns(raw_labeled_drilldowns: any) {
@@ -99,7 +71,7 @@ export function Drilldownable<TBase extends Constructor<GroongaCommand>>(Base: T
     }
 
     get drilldowns() {
-      return this.array_value('drilldown')
+      return array_value(this.arguments, 'drilldown')
     }
 
     get drilldown_filter(): string | undefined {
@@ -111,19 +83,19 @@ export function Drilldownable<TBase extends Constructor<GroongaCommand>>(Base: T
     }
 
     get drilldown_sort_keys() {
-      return this.parse_array_value(this.arguments['drilldown_sort_keys'] || this.arguments['drilldown_sortby'] || '')
+      return parse_array_value(this.arguments['drilldown_sort_keys'] ?? this.arguments['drilldown_sortby'] ?? '')
     }
 
     get drilldown_output_columns() {
-      return this.array_value('drilldown_output_columns')
+      return array_value(this.arguments, 'drilldown_output_columns')
     }
 
     get drilldown_offset() {
-      return this.integer_value('drilldown_offset')
+      return integer_value(this.arguments, 'drilldown_offset')
     }
 
     get drilldown_limit() {
-      return this.integer_value('drilldown_limit')
+      return integer_value(this.arguments, 'drilldown_limit')
     }
 
     get drilldown_calc_types(): string | undefined {

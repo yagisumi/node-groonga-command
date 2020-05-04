@@ -1,6 +1,5 @@
-import deepEqual from 'deep-equal'
-
-type StringPairs = { [key: string]: string }
+import { StringPairs, FormatOptions } from '../types'
+import { escapeValue, equalsStringPairs } from '../utils'
 
 function isPairArguments(obj: any): obj is StringPairs {
   return typeof obj === 'object'
@@ -10,9 +9,23 @@ function isOrderedArguments(obj: any): obj is string[] | undefined {
   return obj === undefined || Array.isArray(obj)
 }
 
-export type FormatOptions = {
-  pretty_print?: boolean
-  exclude?: string[]
+function construct_arguments(
+  args: StringPairs,
+  pair_arguments: StringPairs,
+  ordered_arguments: string[],
+  parameter_names: string[] = []
+) {
+  Object.keys(pair_arguments).forEach((key) => {
+    args[key] = pair_arguments[key]
+  })
+
+  for (let i = 0; i < ordered_arguments.length; i++) {
+    const name = parameter_names[i]
+    if (name == null) {
+      break
+    }
+    args[name] = ordered_arguments[i]
+  }
 }
 
 export function createCommand(
@@ -46,36 +59,18 @@ export class GroongaCommand {
       this.command_name = arg1
       if (arg1 in GroongaCommand.CommandList) {
         const CommandClass = GroongaCommand.CommandList[arg1]
-        this.construct_arguments(arg2, arg3 || [], CommandClass.parameter_names)
+        construct_arguments(this.arguments, arg2, arg3 || [], CommandClass.parameter_names)
         Object.setPrototypeOf(this, CommandClass.prototype)
       } else {
-        this.construct_arguments(arg2, arg3 || [])
+        construct_arguments(this.arguments, arg2, arg3 || [])
       }
     } else if (isPairArguments(arg1) && isOrderedArguments(arg2)) {
       // @ts-ignore 2564
       this.command_name = this.constructor.command_name
       // @ts-ignore 2564
-      this.construct_arguments(arg1, arg2 || [], this.constructor.parameter_names)
+      construct_arguments(this.arguments, arg1, arg2 || [], this.constructor.parameter_names)
     } else {
       throw new Error('invalid arguments')
-    }
-  }
-
-  private construct_arguments(
-    pair_arguments: StringPairs,
-    ordered_arguments: string[],
-    parameter_names: string[] = []
-  ) {
-    Object.keys(pair_arguments).forEach((key) => {
-      this.arguments[key] = pair_arguments[key]
-    })
-
-    for (let i = 0; i < ordered_arguments.length; i++) {
-      const name = parameter_names[i]
-      if (name == null) {
-        break
-      }
-      this.arguments[name] = ordered_arguments[i]
     }
   }
 
@@ -89,7 +84,7 @@ export class GroongaCommand {
       (typeof cmd === 'object' &&
         cmd instanceof GroongaCommand &&
         cmd.command_name === this.command_name &&
-        deepEqual(cmd.arguments, this.arguments))
+        equalsStringPairs(cmd.arguments, this.arguments))
     )
   }
 
@@ -144,15 +139,11 @@ export class GroongaCommand {
       .sort()
       .forEach((name) => {
         if (!exclude.includes(name)) {
-          components.push(`--${name} ${this.escape_value(this.arguments[name])}`)
+          components.push(`--${name} ${escapeValue(this.arguments[name])}`)
         }
       })
 
     return pretty_print ? components.join(' \\\n  ') : components.join(' ')
-  }
-
-  private escape_value(value: string) {
-    return `"${value.replace(/[\n"\\]/g, (match) => (match === '\n' ? '\\n' : `\\${match}`))}"`
   }
 
   toString() {
@@ -160,67 +151,6 @@ export class GroongaCommand {
       return this.to_uri_format()
     } else {
       return this.to_command_format()
-    }
-  }
-
-  protected integer_value(name: string): number | undefined {
-    if (name in this.arguments) {
-      return this.parse_integer_value(this.arguments[name])
-    } else {
-      return undefined
-    }
-  }
-
-  protected parse_integer_value(value: string) {
-    const n = parseInt(value)
-    return isNaN(n) ? undefined : n
-  }
-
-  protected array_value(name: string) {
-    return this.parse_array_value(this.arguments[name] || '')
-  }
-
-  protected parse_array_value(value: string) {
-    return value
-      .trim()
-      .split(/\s*,\s*/)
-      .filter((s) => s.length > 0)
-  }
-
-  protected flags_value(name: string) {
-    return this.parse_flags_value(this.arguments[name] || '')
-  }
-
-  protected parse_flags_value(value: string) {
-    return value
-      .trim()
-      .split(/\s*[| ]\s*/)
-      .filter((s) => s.length > 0)
-  }
-
-  protected boolean_value<T = boolean, U = boolean>(name: string, default_value: T, invalid: U): boolean | T | U {
-    if (name in this.arguments) {
-      return this.parse_boolean_value(this.arguments[name], default_value, invalid)
-    } else {
-      return default_value
-    }
-  }
-
-  protected parse_boolean_value<T = boolean, U = boolean>(
-    value: string,
-    default_value: T,
-    invalid: U
-  ): boolean | T | U {
-    if (value.length === 0) {
-      return default_value
-    }
-
-    if (value === 'yes') {
-      return true
-    } else if (value === 'no') {
-      return false
-    } else {
-      return invalid
     }
   }
 }

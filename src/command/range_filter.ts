@@ -1,5 +1,6 @@
 import { GroongaCommand } from './groonga_command'
 import { Searchable } from './searchable'
+import { integer_value, array_value } from '../utils'
 
 export class RangeFilter extends Searchable(GroongaCommand) {
   static readonly command_name = 'range_filter'
@@ -40,11 +41,11 @@ export class RangeFilter extends Searchable(GroongaCommand) {
   }
 
   get offset() {
-    return this.integer_value('offset')
+    return integer_value(this.arguments, 'offset')
   }
 
   get limit() {
-    return this.integer_value('limit')
+    return integer_value(this.arguments, 'limit')
   }
 
   get filter(): string | undefined {
@@ -52,7 +53,7 @@ export class RangeFilter extends Searchable(GroongaCommand) {
   }
 
   get output_columns() {
-    return this.array_value('output_columns')
+    return array_value(this.arguments, 'output_columns')
   }
 }
 

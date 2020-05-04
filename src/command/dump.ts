@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { boolean_value } from '../utils'
 
 export class Dump extends GroongaCommand {
   static readonly command_name = 'dump'
@@ -17,7 +18,7 @@ export class Dump extends GroongaCommand {
   }
 
   is_sort_hash_table() {
-    return this.boolean_value('sort_hash_table', false, false)
+    return boolean_value(this.arguments, 'sort_hash_table', false, false)
   }
 }
 

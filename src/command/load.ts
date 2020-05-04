@@ -1,4 +1,5 @@
 import { GroongaCommand } from './groonga_command'
+import { boolean_value } from '../utils'
 
 export class Load extends GroongaCommand {
   static readonly command_name = 'load'
@@ -63,7 +64,7 @@ export class Load extends GroongaCommand {
   }
 
   is_output_ids() {
-    return this.boolean_value('output_ids', false, false)
+    return boolean_value(this.arguments, 'output_ids', false, false)
   }
 }
 
