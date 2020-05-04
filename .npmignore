@@ -13,3 +13,4 @@ rollup.config.umd.js
 /docs/
 /coverage/
 tsconfig.json
+/tools/
