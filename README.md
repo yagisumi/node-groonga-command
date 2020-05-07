@@ -54,7 +54,7 @@ Same as `new GroongaCommand(command_name, pair_arguments, ordered_arguments)`
 ```ts
 function parseCommand(
   command_line: string,
-  options?: { [key: string]: string | number } // Overwrite arguments
+  options?: { [name: string]: string | number } // Overwrite arguments
 ): GroongaCommand | undefined
 ```
 
