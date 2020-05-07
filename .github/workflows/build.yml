@@ -23,7 +23,7 @@ jobs:
           node -v
           npm -v
       - run: npm install
-      - run: npm test
+      - run: npm run test:ci
       - name: Coveralls
         if: matrix.os == 'ubuntu-latest' && matrix.node == 14
         uses: coverallsapp/github-action@master
