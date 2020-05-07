@@ -103,7 +103,7 @@ function parseUriPath(line: string) {
     ordered_arguments: [],
   }
 
-  const m = path.match(/\/([^\/]*)$/)
+  const m = path.match(/\/([^/]*)$/)
   if (m == null || m[1].length === 0) {
     return cargs
   }
