@@ -6,9 +6,9 @@ function split_filter_conditions(args: StringPairs) {
     .split(/(?:&&|&!|\|\|)/)
     .filter((str) => str.length > 0)
     .map((condition) => {
-      let cond = condition.trim().replace(/^[\s\(]*/g, '')
+      let cond = condition.trim().replace(/^[\s(]*/g, '')
       if (!cond.match(/\(/)) {
-        cond = cond.replace(/[\s\)]*$/g, '')
+        cond = cond.replace(/[\s)]*$/g, '')
       }
       return cond
     })

@@ -66,7 +66,7 @@ export function parse_boolean_value(value: string, default_value: boolean, inval
 }
 
 export function escapePattern(str: string) {
-  return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+  return str.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
 }
 
 export function escapeValue(value: string) {
@@ -74,7 +74,7 @@ export function escapeValue(value: string) {
 }
 
 export function equalsStringPairs(obj1: StringPairs, obj2: StringPairs) {
-  for (let name in obj1) {
+  for (const name in obj1) {
     if (!(name in obj2) || obj1[name] !== obj2[name]) {
       return false
     }

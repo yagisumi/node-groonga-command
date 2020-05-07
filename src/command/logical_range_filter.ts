@@ -1,6 +1,6 @@
 import { GroongaCommand } from './groonga_command'
 import { Searchable } from './searchable'
-import { integer_value, array_value, boolean_value } from '../utils'
+import { integer_value, array_value } from '../utils'
 
 export class LogicalRangeFilter extends Searchable(GroongaCommand) {
   static readonly command_name = 'logical_range_filter'
