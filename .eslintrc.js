@@ -1,9 +1,5 @@
 module.exports = {
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-  ],
+  extends: ['eslint:recommended'],
   plugins: ['@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,31 +13,33 @@ module.exports = {
   globals: {},
   rules: {
     'no-constant-condition': ['error', { checkLoops: false }],
-    '@typescript-eslint/camelcase': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/ban-ts-ignore': 'off',
-    '@typescript-eslint/member-delimiter-style': [
-      'error',
-      {
-        multiline: {
-          delimiter: 'none',
-          requireLast: false,
-        },
-        singleline: {
-          delimiter: 'semi',
-          requireLast: false,
-        },
-      },
-    ],
   },
 
   overrides: [
     {
       files: ['*.ts'],
-      rules: {},
+      extends: ['plugin:@typescript-eslint/recommended', 'plugin:@typescript-eslint/eslint-recommended'],
+      rules: {
+        '@typescript-eslint/camelcase': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
+        '@typescript-eslint/no-use-before-define': 'off',
+        '@typescript-eslint/ban-ts-ignore': 'off',
+        '@typescript-eslint/member-delimiter-style': [
+          'error',
+          {
+            multiline: {
+              delimiter: 'none',
+              requireLast: false,
+            },
+            singleline: {
+              delimiter: 'semi',
+              requireLast: false,
+            },
+          },
+        ],
+      },
     },
   ],
 }
