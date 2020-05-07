@@ -13,7 +13,6 @@
   "unpkg": "umd/groonga-command.js",
   "scripts": {
     "test": "run-s prettier:fix eslint jest",
-    "test:ci": "run-s eslint jest",
     "jest": "jest",
     "build": "run-s clean build:*",
     "clean": "rimraf lib coverage umd *.tgz .rpt2_cache",
