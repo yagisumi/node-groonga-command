@@ -34,6 +34,11 @@ export class Select extends Sliceable(Searchable(Drilldownable(GroongaCommand)))
     'drilldown_sort_keys',
   ]
 
+  // incompatible
+  get table(): string | undefined {
+    return this.arguments['table']
+  }
+
   get sortby(): string | undefined {
     return this.arguments['sortby']
   }
