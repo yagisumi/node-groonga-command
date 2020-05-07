@@ -27,7 +27,7 @@ if (TypeGuards.isSelect(command)) {
 const table_create = parseCommand('table_create Paths TABLE_HASH_KEY|KEY_LARGE ShortText')
 if (table_create) {
   console.log(table_create.arguments)
-  // {
+  // [Object: null prototype] {
   //   name: 'Paths',
   //   flags: 'TABLE_HASH_KEY|KEY_LARGE',
   //   key_type: 'ShortText',
