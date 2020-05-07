@@ -1,8 +1,8 @@
 module.exports = {
   extends: [
-    // 'eslint:recommended',
-    // 'plugin:@typescript-eslint/recommended',
-    // 'plugin:@typescript-eslint/eslint-recommended',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
   ],
   plugins: ['@typescript-eslint'],
   parser: '@typescript-eslint/parser',
@@ -16,8 +16,11 @@ module.exports = {
   env: { browser: true, node: true, es6: true },
   globals: {},
   rules: {
-    '@typescript-eslint/explicit-function-return-type': 0,
-    '@typescript-eslint/no-empty-function': 0,
+    '@typescript-eslint/camelcase': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/member-delimiter-style': [
       'error',
       {
@@ -26,7 +29,7 @@ module.exports = {
           requireLast: false,
         },
         singleline: {
-          delimiter: 'comma',
+          delimiter: 'semi',
           requireLast: false,
         },
       },
@@ -35,7 +38,7 @@ module.exports = {
 
   overrides: [
     {
-      files: ['*.ts', '*.ts'],
+      files: ['*.ts'],
       rules: {},
     },
   ],
