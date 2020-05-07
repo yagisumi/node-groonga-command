@@ -1,12 +1,10 @@
 {
   "name": "@yagisumi/groonga-command",
   "version": "0.1.0",
-  "description": "",
-  "keywords": [],
-  "engines": {
-    "node": ">= 10"
-  },
-  "private": true,
+  "description": "Port of groonga-command and groonga-command-parser.",
+  "keywords": [
+    "groonga"
+  ],
   "main": "lib/groonga-command",
   "module": "lib/groonga-command.mjs",
   "types": "lib/groonga-command.d.ts",
