@@ -1,5 +1,5 @@
 module.exports = {
-  testEnvironment: 'jest-environment-jsdom-sixteen',
+  testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
