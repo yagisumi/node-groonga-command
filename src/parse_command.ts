@@ -10,7 +10,7 @@ type CommandInfo = {
   format: 'command' | 'uri'
 }
 
-export function parseCommand(command_line: string, options?: { [key: string]: string | number }) {
+export function parseCommand(command_line: string, pair_arguments?: { [name: string]: string | number }) {
   const line = getCommandString(command_line)
   const cargs = line.startsWith('/') ? parseUriPath(line) : parseCommandLine(line)
 
@@ -25,9 +25,9 @@ export function parseCommand(command_line: string, options?: { [key: string]: st
     command.path_prefix = cargs.path_prefix
   }
 
-  if (options != null) {
-    Object.keys(options).forEach((name) => {
-      const v = options[name]
+  if (pair_arguments != null) {
+    Object.keys(pair_arguments).forEach((name) => {
+      const v = pair_arguments[name]
       if (v != null) {
         command.arguments[name] = v.toString()
       }
