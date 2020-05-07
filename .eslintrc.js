@@ -16,11 +16,13 @@ module.exports = {
   env: { browser: true, node: true, es6: true },
   globals: {},
   rules: {
+    'no-constant-condition': ['error', { checkLoops: false }],
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/member-delimiter-style': [
       'error',
       {
