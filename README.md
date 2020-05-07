@@ -39,11 +39,11 @@ if (table_create) {
 
 ### createCommand
 ```ts
-`function createCommand(
+function createCommand(
   command_name: string, 
   pair_arguments: { [name: string]: string }, 
   ordered_arguments?: string[]
-): GroongaCommand`
+): GroongaCommand
 ```
 
 Creates a command object.<br>
@@ -52,10 +52,10 @@ Same as `new GroongaCommand(command_name, pair_arguments, ordered_arguments)`
 ### parseCommand
 
 ```ts
-`function parseCommand(
+function parseCommand(
   command_line: string,
   options?: { [key: string]: string | number } // Overwrite arguments
-): GroongaCommand | undefined`
+): GroongaCommand | undefined
 ```
 
 Returns GroongaCommand if parsing is successful, otherwise returns undefined.<br>
