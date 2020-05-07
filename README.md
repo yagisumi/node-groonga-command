@@ -1,9 +1,9 @@
 # @yagisumi/groonga-command
 
-Welcome
+This package is a port of [groonga-command](https://github.com/groonga/groonga-command) and [groonga-command-parser](https://github.com/groonga/groonga-command-parser)
 
 [![NPM version][npm-image]][npm-url] [![install size][packagephobia-image]][packagephobia-url] [![DefinitelyTyped][dts-image]][dts-url]  
-[![Build Status][githubactions-image]][githubactions-url] [![Build Status][travis-image]][travis-url] [![Build Status][appveyor-image]][appveyor-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+[![Build Status][githubactions-image]][githubactions-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 
 ## Installation
 
@@ -13,25 +13,53 @@ $ npm i @yagisumi/groonga-command
 
 ## Usage
 
-- javascript
-
-```js
-const { groonga-command } = require('@yagisumi/groonga-command');
-
-XXXXXXXXX();
-```
-
 - typescript
 
 ```ts
-import { @yagisumi/groonga-command } from '@yagisumi/groonga-command';
+import { createCommand, TypeGuards, parseCommand } from '@yagisumi/groonga-command'
 
-XXXXXXXXX();
+const command = createCommand('select', { table: 'Users' })
+console.log(command.command_name) // 'select'
+if (TypeGuards.isSelect(command)) {
+  console.log(command.table) // 'Users'
+}
+
+const table_create = parseCommand('table_create Paths TABLE_HASH_KEY|KEY_LARGE ShortText')
+if (table_create) {
+  console.log(table_create.arguments)
+  // {
+  //   name: 'Paths',
+  //   flags: 'TABLE_HASH_KEY|KEY_LARGE',
+  //   key_type: 'ShortText',
+  // }
+}
 ```
 
-## Documentation
+## API
 
-https://yagisumi.github.io/node-groonga-command/
+### createCommand
+```ts
+`function createCommand(
+  command_name: string, 
+  pair_arguments: { [name: string]: string }, 
+  ordered_arguments?: string[]
+): GroongaCommand`
+```
+
+Creates a command object.<br>
+Same as `new GroongaCommand(command_name, pair_arguments, ordered_arguments)`
+
+### parseCommand
+
+```ts
+`function parseCommand(
+  command_line: string,
+  options?: { [key: string]: string | number } // Overwrite arguments
+): GroongaCommand | undefined`
+```
+
+Returns GroongaCommand if parsing is successful, otherwise returns undefined.<br>
+
 
 ## License
 
